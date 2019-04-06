@@ -49,5 +49,7 @@ then
     echo "CMD     = $CMD"
 
     $CMD
+else
+    echo "Not creating a release because The following keyword was not present: $*"
 fi
 
