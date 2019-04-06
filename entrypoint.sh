@@ -39,7 +39,15 @@ if $( jq '.commits[].message, .head_commit.message' < $EVENT_PATH  | grep -iq $*
 then
     VERSION=$(date +%F.%s)
     DATA=$(printf '{"tag_name": "v%s","target_commitish": "master","name": "v%s","body": "Automated release based on keyword: %s","draft": false,"prerelease": false}' $VERSION $VERSION "$*")
+    URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases?access_token=${GITHUB_TOKEN})"
+    CMD="curl --data '$DATA' https://api.github.com/repos/${GITHUB_REPOSITORY}/releases?access_token=${GITHUB_TOKEN}"
 
-    curl --data "$DATA" https://api.github.com/repos/${GITHUB_REPOSITORY}/releases?access_token=${GITHUB_TOKEN}
+    echo "Keyword = $*"
+    echo "Version = $VERSION"
+    echo "Data    = $DATA"
+    echo "URL     = $URL"
+    echo "CMD     = $CMD"
+
+    $CMD
 fi
 
