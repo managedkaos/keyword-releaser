@@ -49,7 +49,7 @@ then
     echo "URL     = $URL"
     echo "CMD     = $CMD"
 
-    $CMD
+    echo $DATA | http POST $URL
 else
     echo "Not creating a release because The following keyword was not present: $*"
 fi
