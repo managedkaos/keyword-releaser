@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# turn on ERREXIT so that the script exits immediately if
+# an error is encountered
+set -e
+
 # check for the environment variable GITHUB_EVENT_PATH
 # if this variable is not zero length, then the entrypoint script is being
 # run as a GitHub Action.
@@ -9,7 +13,7 @@
 #
 # set EVENT_DATA_PATH = $GITHUB_EVENT_PATH
 #
-if [ ! -z "$GITHUB_EVENT_PATH" ];
+if [ -n "$GITHUB_EVENT_PATH" ];
 then
     EVENT_PATH=$GITHUB_EVENT_PATH
 #
@@ -39,11 +43,11 @@ echo "-----------------------------------------------------------"
 # check for the keyword in the event's commit messages
 # use JQ to filter out the messages
 # grep for the keyword in the messages found by JQ
-# `grep -iq` tells grep to ignore case and operate in quiet mode
-if $( jq '.commits[].message, .head_commit.message' < $EVENT_PATH  | grep -iq $* );
+# ignore case with `grep -i` and keep things quiet with `-q`
+if jq '.commits[].message, .head_commit.message' < $EVENT_PATH | grep -i -q "$*";
 then
     VERSION=$(date +%F.%s)
-    DATA=$(printf '{"tag_name":"v%s","target_commitish":"master","name":"v%s","body":"Automated release based on keyword: %s","draft":false,"prerelease":false}' $VERSION $VERSION "$*")
+    DATA=$(printf '{"tag_name":"v%s","target_commitish":"master","name":"v%s","body":"Automated release based on keyword: %s","draft":false,"prerelease":false}' "$VERSION" "$VERSION" "$*")
     URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases?access_token=${GITHUB_TOKEN}"
 
     CMD="echo $DATA | http POST $URL | jq ."
@@ -58,7 +62,7 @@ then
     echo
     echo "CMD     = $CMD"
 
-    if [ LOCAL_TEST="true" ];
+    if [[ "${LOCAL_TEST}" == *"true"* ]];
     then
         echo
         echo "##"
