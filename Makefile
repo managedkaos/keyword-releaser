@@ -1,10 +1,10 @@
 KEYWORD=FIXED
 
 run: build
-	docker run --rm -it keyword-releaser $(KEYWORD)
+	docker run --rm keyword-releaser $(KEYWORD)
 
 build:
-	docker build -t keyword-releaser .
+	docker build --tag keyword-releaser .
 
 test:
 	./entrypoint.sh $(KEYWORD)
