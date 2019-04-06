@@ -70,7 +70,7 @@ then
         echo "##"
         echo
     else
-        $CMD
+        echo $DATA | http POST $URL | jq .
     fi
 else
     echo "Not creating a release because The following keyword was not present: $*"
