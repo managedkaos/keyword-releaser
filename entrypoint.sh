@@ -40,6 +40,9 @@ echo "-----------------------------------------------------------"
 echo "Processing $EVENT_PATH"
 echo "-----------------------------------------------------------"
 
+env
+jq . < $EVENT_PATH
+
 # check for the keyword in the event's commit messages
 # use JQ to filter out the messages
 # grep for the keyword in the messages found by JQ
