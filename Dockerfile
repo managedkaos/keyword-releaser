@@ -1,9 +1,12 @@
 FROM alpine
 
+LABEL "maintainer"="managedkaos"
+LABEL "repository"="https://github.com/managedkaos/keyword-releaser"
 LABEL "com.github.actions.name"="Keyword Releaser"
-LABEL "com.github.actions.description"="Creates a release if the keyword is found in commit messages."
+LABEL "com.github.actions.description"="Creates a release if a keyword is found in commit messages."
 LABEL "com.github.actions.icon"="gift"
 LABEL "com.github.actions.color"="purple"
+
 
 RUN apk add --no-cache \
         bash \
