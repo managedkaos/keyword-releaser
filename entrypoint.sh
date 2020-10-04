@@ -58,9 +58,9 @@ then
     DATA="${DATA} $(printf '"draft":false, "prerelease":false}')"
 
     #DATA=$(printf '{"tag_name":"v%s","target_commitish":"master","name":"v%s","body":"Automated release based on keyword: %s","draft":false,"prerelease":false}' "$VERSION" "$VERSION" "$*")
-    URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases?access_token=${GITHUB_TOKEN}"
+    URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases"
 
-    CMD="echo $DATA | http POST $URL | jq ."
+    CMD="echo $DATA | http httpbin.org/headers 'Authorization: token ${GITHUB_TOKEN}' POST $URL | jq ."
 
     echo "Keyword = $*"
     echo
