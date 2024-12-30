@@ -13,15 +13,21 @@ The Keyword Releaser will create a release based on the keyword specified in the
 # Examples
 Here's an example workflow that uses the Keyword Releaser action.  The workflow is triggered by a `PUSH` event and looks for the keyword `"FIXED"`.
 
-```
-workflow "keyword-monitor" {
-  on = "push"
-  resolves = [ "keyword-releaser" ]
-}
+```yaml
+name: keyword-monitor
 
-action "keyword-releaser" {
-  uses = "managedkaos/keyword-releaser@master"
-  secrets = ["GITHUB_TOKEN"]
-  args = "FIXED"
-}
+on:
+  push:
+
+jobs:
+  keyword-releaser:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Keyword Releaser
+        uses: managedkaos/keyword-releaser@master
+        with:
+          args: FIXED
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 ```
